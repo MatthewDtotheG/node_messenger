@@ -1,27 +1,13 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Layout from "./components/Layout";
+
+// To start the application use "npm run react" in one terminal window and "npm run server" in another
+// Take the IP from the npm run react window and replace 3000 with 5000
+// Set that as the socketUrl in layout
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    return <Layout title="Chat App BAby" />;
   }
 }
 
