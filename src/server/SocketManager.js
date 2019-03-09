@@ -32,6 +32,7 @@ module.exports = function(socket) {
   //User Connects with Username
 
   socket.on(USER_CONNECTED, user => {
+    console.log('made it to user connected socket')
     sendMessageToChatFromUser = sendMessageToChat(user.name);
     sendTypingFromUser = sendTypingToChat(user.name);
     console.log({ user });

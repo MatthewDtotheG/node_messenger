@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import io from "socket.io-client";
 import LoginForm from "./LoginForm";
 import ChatContainer from "./chats/ChatContainer";
-import { USER_CONNECTED, LOGOUT } from "../Events";
+import { LOGOUT } from "../Events";
+import { socketHelper } from '../../src/socketHelper';
 import "../index.css";
 
 const socketUrl = "http://10.164.181.225:5000/";
@@ -16,7 +17,8 @@ class Layout extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    socketHelper();
     this.initSocket();
   }
 
@@ -30,12 +32,12 @@ class Layout extends Component {
     });
   };
 
-  setUser = user => {
-    const { socket } = this.state;
-    this.setState({ user: user }, () =>
-      socket.emit(USER_CONNECTED, this.state.user)
-    );
-  };
+  // setUser = user => {
+  //   const { socket } = this.state;
+  //   this.setState({ user: user }, () =>
+  //   socket.emit(USER_CONNECTED, this.state.user)
+  //   );
+  // };
 
   logout = () => {
     const { socket } = this.state;
@@ -49,7 +51,7 @@ class Layout extends Component {
     return (
       <div className="container">
         {!user ? (
-          <LoginForm socket={socket} setUser={this.setUser} />
+          <LoginForm socket={socket} />
         ) : (
           <ChatContainer socket={socket} user={user} logout={this.logout} />
         )}
@@ -58,4 +60,4 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+export default Layout

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { VERIFY_USER } from "../Events";
-
+// import { VERIFY_USER } from "../Events";
+import { userConnected, verifyUser } from "../actions/userAction";
+import { connect } from 'react-redux';
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -16,18 +17,22 @@ class LoginForm extends Component {
       this.setError("Username taken");
     } else {
       this.setError("");
-      this.props.setUser(user);
+      // this.props.setUser(user);
+      console.log(user)
+      this.props.userConnected(user);
     }
+
   };
 
   handleSubmit = e => {
     e.preventDefault();
     const { socket } = this.props;
     const { nickname } = this.state;
-    socket.emit(VERIFY_USER, nickname, this.verifyUser);
+    this.props.verifyUser(nickname, this.verifyUser)
+    //socket.emit(VERIFY_USER, nickname, this.verifyUser);
   };
 
-  handleChange = e => {
+  handleChange = e => { 
     this.setState({
       nickname: e.target.value
     });
@@ -64,4 +69,12 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => ({
+  userConnected: (user) => dispatch(userConnected(user)),
+  verifyUser: (nickname, callback) => dispatch(verifyUser(nickname, callback)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(LoginForm);
