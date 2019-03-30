@@ -21,7 +21,7 @@ class ChatContainer extends Component {
 
   componentDidMount() {
     const { socket } = this.props;
-    socket.emit(COMMUNITY_CHAT, this.resetChat);
+    // socket.emit(COMMUNITY_CHAT, this.resetChat);
   }
 
   // Reset the chat back to only the chat passed in
@@ -44,7 +44,10 @@ class ChatContainer extends Component {
     const { chats } = this.state;
 
     const newChats = reset ? [chat] : [...chats, chat];
-    this.setState({ chats:newChats, activeChat:reset ? chat:this.state.activeChat});
+    this.setState({
+      chats: newChats,
+      activeChat: reset ? chat : this.state.activeChat
+    });
 
     const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`;
     const typingEvent = `${TYPING}-${chat.id}`;
@@ -73,22 +76,22 @@ class ChatContainer extends Component {
   // @param chatId {number}
 
   updateTypingInChat = chatId => {
-    return ({isTyping, user}) => {
-      if(user !== this.props.user.name){
-        const { chats } = this.state
-        let newChats = chats.map((chat) =>{
-          if(chat.id === chatId){
-            if(isTyping && !chat.typingUsers.includes(user)){
-              chat.typingUsers.push(user)
-            } else if(!isTyping && chat.typingUsers.includes(user)) {
-              chat.typingUsers = chat.typingUsers.filter(u => u !== user)
+    return ({ isTyping, user }) => {
+      if (user !== this.props.user.name) {
+        const { chats } = this.state;
+        let newChats = chats.map(chat => {
+          if (chat.id === chatId) {
+            if (isTyping && !chat.typingUsers.includes(user)) {
+              chat.typingUsers.push(user);
+            } else if (!isTyping && chat.typingUsers.includes(user)) {
+              chat.typingUsers = chat.typingUsers.filter(u => u !== user);
             }
           }
-          return chat
-        })
-        this.setState({chats: newChats})
+          return chat;
+        });
+        this.setState({ chats: newChats });
       }
-    }
+    };
   };
 
   setActiveChat = activeChat => {
@@ -118,10 +121,6 @@ class ChatContainer extends Component {
   render() {
     const { user, logout } = this.props;
     const { chats, activeChat } = this.state;
-    console.log(chats);
-    console.log(activeChat);
-    console.log(user);
-    console.log("IN CHART CONTAINER");
     return (
       <div className="container">
         <Sidebar

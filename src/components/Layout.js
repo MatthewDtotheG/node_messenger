@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import io from "socket.io-client";
+import { connect } from "react-redux";
+// import io from "socket.io-client";
 import LoginForm from "./LoginForm";
 import ChatContainer from "./chats/ChatContainer";
 import { LOGOUT } from "../Events";
-import { socketHelper } from '../../src/socketHelper';
 import "../index.css";
 
-const socketUrl = "http://10.164.181.225:5000/";
+// const socketUrl = "http://192.168.1.7:5000/";
 class Layout extends Component {
   constructor(props) {
     super(props);
@@ -18,24 +18,28 @@ class Layout extends Component {
   }
 
   componentDidMount() {
-    socketHelper();
-    this.initSocket();
+    //socketHelper();
+    //  this.initSocket();
   }
 
-  initSocket = () => {
-    const socket = io(socketUrl);
-    socket.on("connect", () => {
-      console.log("Connected");
-    });
-    this.setState({
-      socket
-    });
-  };
+  componentDidUpdate() {
+    console.log(this.props.user);
+  }
+  //
+  // initSocket = () => {
+  //   const socket = io(socketUrl);
+  //   socket.on("connect", () => {
+  //     console.log("Connected");
+  //   });
+  //   this.setState({
+  //     socket
+  //   });
+  // };
 
   // setUser = user => {
   //   const { socket } = this.state;
   //   this.setState({ user: user }, () =>
-  //   socket.emit(USER_CONNECTED, this.state.user)
+  //     socket.emit(USER_CONNECTED, this.state.user)
   //   );
   // };
 
@@ -46,8 +50,8 @@ class Layout extends Component {
   };
 
   render() {
-    // const { title } = this.props;
-    const { socket, user } = this.state;
+    const { title, user } = this.props;
+    const { socket } = this.state;
     return (
       <div className="container">
         {!user ? (
@@ -60,4 +64,11 @@ class Layout extends Component {
   }
 }
 
-export default Layout
+const mapStateToProps = state => ({
+  user: state.userStuff.userName
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(Layout);

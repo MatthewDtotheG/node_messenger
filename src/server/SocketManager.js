@@ -23,6 +23,7 @@ module.exports = function(socket) {
   let sendTypingFromUser;
   // Verify Username
   socket.on(VERIFY_USER, (nickname, callback) => {
+    console.log("made it to socket verify user");
     if (isUser(connectedUsers, nickname)) {
       callback({ isUser: true, user: null });
     } else {
@@ -32,7 +33,7 @@ module.exports = function(socket) {
   //User Connects with Username
 
   socket.on(USER_CONNECTED, user => {
-    console.log('made it to user connected socket')
+    console.log("made it to user connected socket");
     sendMessageToChatFromUser = sendMessageToChat(user.name);
     sendTypingFromUser = sendTypingToChat(user.name);
     console.log({ user });
@@ -67,15 +68,15 @@ module.exports = function(socket) {
     sendMessageToChatFromUser(chatId, message);
   });
 
-  socket.on(TYPING, ({chatId, isTyping})=> {
-    sendTypingFromUser(chatId, isTyping)
-  })
+  socket.on(TYPING, ({ chatId, isTyping }) => {
+    sendTypingFromUser(chatId, isTyping);
+  });
 };
 
-function sendTypingToChat(user){
-  return (chatId, isTyping)=>{
-    io.emit(`${TYPING}-${chatId}`, {user, isTyping})
-  }
+function sendTypingToChat(user) {
+  return (chatId, isTyping) => {
+    io.emit(`${TYPING}-${chatId}`, { user, isTyping });
+  };
 }
 
 function sendMessageToChat(sender) {
