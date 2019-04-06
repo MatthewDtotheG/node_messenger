@@ -97,15 +97,12 @@ class ChatContainer extends Component {
   };
 
   setActiveChat = activeChat => {
-    console.log(activeChat);
-    console.log("IN ACTIVE CHAT");
     this.setState({ activeChat });
   };
 
   render() {
     const { userName, chatObj } = this.props;
     const { chats } = this.state;
-    console.log(userName);
     return (
       <div className="container">
         <Sidebar

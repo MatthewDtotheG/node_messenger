@@ -6,7 +6,6 @@ import { logoutUser } from "../../actions/userAction";
 class Sidebar extends Component {
   render() {
     const { chats, activeChat, user, setActiveChat, userName } = this.props;
-    console.log(chats);
     return (
       <div id="side-bar">
         <div className="heading">
@@ -20,7 +19,6 @@ class Sidebar extends Component {
           }}
         >
           {chats.map(chat => {
-            console.log(chat);
             if (chat.name) {
               const lastMessage = chat.messages[chat.messages.length - 1];
               const user = chat.users.find(({ name }) => {

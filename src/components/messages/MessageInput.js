@@ -27,6 +27,7 @@ class MessageInput extends Component {
     this.lastUpdateTime = Date.now();
     if (!this.state.isTyping) {
       this.setState({ isTyping: true });
+      console.log(this.props.chatId);
       this.props.sendTypingAction(this.props.chatId, true);
       this.startCheckingTyping();
     }
@@ -46,6 +47,7 @@ class MessageInput extends Component {
     console.log("stop typing");
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
+      console.log(this.props.chatId);
       this.props.sendTypingAction(this.props.chatId, false);
     }
   };

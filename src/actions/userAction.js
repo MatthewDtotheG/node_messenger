@@ -33,8 +33,10 @@ export const logoutUser = () => dispatch => {
 
 export const userConnected = user => dispatch => {
   console.log("made it to user connected action");
+  console.log(user);
   socket.emit(
     USER_CONNECTED,
+    user,
     dispatch({
       type: "CONNECTED_USER",
       user
@@ -58,8 +60,10 @@ export const communityChat = callback => dispatch => {
   });
 };
 
-export const sendTypingAction = ({ chatId, callback }) => dispatch => {
-  socket.emit(TYPING, { chatId, callback });
+export const sendTypingAction = (chatId, isTyping) => dispatch => {
+  console.log(chatId);
+  console.log(isTyping);
+  socket.emit(TYPING, { chatId, isTyping });
 };
 
 export const sendMessageAction = (chatId, message) => dispatch => {

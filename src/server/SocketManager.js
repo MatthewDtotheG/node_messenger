@@ -37,7 +37,6 @@ module.exports = function(socket) {
     console.log(user);
     sendMessageToChatFromUser = sendMessageToChat(user.name);
     sendTypingFromUser = sendTypingToChat(user.name);
-    console.log({ user });
     connectedUsers = addUser(connectedUsers, user);
     socket.user = user;
     io.emit(USER_CONNECTED, connectedUsers);
@@ -77,6 +76,7 @@ module.exports = function(socket) {
 };
 
 function sendTypingToChat(user) {
+  console.log("made it to send typing");
   return (chatId, isTyping) => {
     io.emit(`${TYPING}-${chatId}`, { user, isTyping });
   };

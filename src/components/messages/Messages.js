@@ -22,9 +22,6 @@ class Messages extends Component {
 
   render() {
     const { messages, user, typingUsers } = this.props;
-    console.log(messages);
-    console.log(user);
-    console.log(typingUsers);
     return (
       <div ref="container" className="thread-container">
         <div className="thread">
@@ -38,7 +35,7 @@ class Messages extends Component {
                 <div className="time">{mes.time}</div>
                 <div className="date">
                   <div className="message">{mes.message}</div>
-                  <div className="name">{`${mes.name}`}</div>
+                  <div className="name">{`${mes.sender}`}</div>
                 </div>
               </div>
             );
@@ -46,7 +43,9 @@ class Messages extends Component {
           {typingUsers.map(name => {
             return (
               <div key={user} className="typing-user">
-                {`${user} is ...typing`}
+                {typingUsers[0] === user
+                  ? " "
+                  : `${typingUsers[0]} is ...typing`}
               </div>
             );
           })}
