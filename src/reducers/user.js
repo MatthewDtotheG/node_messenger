@@ -12,6 +12,16 @@ export default function(state = { messages: [] }, action) {
         ...state,
         userName: action.user.name
       };
+    case "LOGOUT":
+      return {
+        ...state,
+        userName: null
+      };
+    case "ADD_CHAT_INFO":
+      return {
+        ...state,
+        chatObj: action.communityChat
+      };
     default:
       return state;
   }

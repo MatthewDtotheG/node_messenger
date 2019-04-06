@@ -48,7 +48,7 @@ class LoginForm extends Component {
       <div className="login">
         <form onSubmit={this.handleSubmit} className="login-form">
           <label htmlFor="nickname">
-            <h2>Got a nickname</h2>
+            <h2>Enter username</h2>
           </label>
           <input
             ref={input => {

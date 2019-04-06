@@ -34,6 +34,7 @@ module.exports = function(socket) {
 
   socket.on(USER_CONNECTED, user => {
     console.log("made it to user connected socket");
+    console.log(user);
     sendMessageToChatFromUser = sendMessageToChat(user.name);
     sendTypingFromUser = sendTypingToChat(user.name);
     console.log({ user });
@@ -53,7 +54,7 @@ module.exports = function(socket) {
   });
 
   // User logouts
-  socket.on("logout", () => {
+  socket.on(LOGOUT, () => {
     connectedUsers = removeUser(connectedUsers, socket.user.name);
     io.emit(USER_DISCONNECTED, connectedUsers);
     console.log("Disconnect", connectedUsers);
@@ -62,10 +63,12 @@ module.exports = function(socket) {
   // Get community chat
   socket.on(COMMUNITY_CHAT, callback => {
     callback(communityChat);
+    return communityChat;
   });
 
   socket.on(MESSAGE_SENT, ({ chatId, message }) => {
     sendMessageToChatFromUser(chatId, message);
+    console.log("Message made it to back end ", message);
   });
 
   socket.on(TYPING, ({ chatId, isTyping }) => {

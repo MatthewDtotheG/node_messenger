@@ -1,58 +1,58 @@
 import React, { Component } from "react";
 
 class Messages extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.scrollDown = this.scrollDown.bind(this)
+    this.scrollDown = this.scrollDown.bind(this);
   }
 
   scrollDown = () => {
-    const { container } = this.refs
-    container.scrollTop = container.scrollHeight
-    console.log(container);
-  }
+    const { container } = this.refs;
+    container.scrollTop = container.scrollHeight;
+  };
 
   componentDidMount() {
-    this.scrollDown()
+    this.scrollDown();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.scrollDown()
+    this.scrollDown();
   }
 
-
   render() {
-    const {messages, user, typingUsers} = this.props
+    const { messages, user, typingUsers } = this.props;
+    console.log(messages);
+    console.log(user);
+    console.log(typingUsers);
     return (
-      <div ref='container' className="thread-container">
+      <div ref="container" className="thread-container">
         <div className="thread">
-          {
-            messages.map((mes)=> {
-              return(
-                <div key={mes.id} className={`message-container ${mes.sender === user.name && 'right'}`}>
-                  <div className="time">{mes.time}</div>
-                  <div className="date">
-                    <div className="message">{mes.message}</div>
-                    <div className="name">{mes.sender}</div>
-                  </div>
+          {messages.map(mes => {
+            return (
+              <div
+                key={mes.id}
+                className={`message-container ${mes.sender === user &&
+                  "right"}`}
+              >
+                <div className="time">{mes.time}</div>
+                <div className="date">
+                  <div className="message">{mes.message}</div>
+                  <div className="name">{`${mes.name}`}</div>
                 </div>
-              )
-            })
-          }
-          {
-            typingUsers.map((name) => {
-              return (
-                <div key={name} className="typing-user">
-                  {`${name} is ...typing`}
-                </div>
-              )
-            })
-          }
+              </div>
+            );
+          })}
+          {typingUsers.map(name => {
+            return (
+              <div key={user} className="typing-user">
+                {`${user} is ...typing`}
+              </div>
+            );
+          })}
         </div>
       </div>
-    )
+    );
   }
 }
 
