@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { VERIFY_USER } from "../Events";
 import { userConnected, verifyUser } from "../actions/userAction";
 import { connect } from "react-redux";
 class LoginForm extends Component {

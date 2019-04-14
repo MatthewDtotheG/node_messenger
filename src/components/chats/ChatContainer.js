@@ -28,7 +28,6 @@ class ChatContainer extends Component {
   // Reset the chat back to only the chat passed in
   // @param chat {chat}
   resetChat = chat => {
-    console.log("RESET CHAT");
     return this.addChat(chat, true);
   };
 

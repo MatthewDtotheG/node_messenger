@@ -22,6 +22,7 @@ class Messages extends Component {
 
   render() {
     const { messages, user, typingUsers } = this.props;
+    console.log(messages);
     return (
       <div ref="container" className="thread-container">
         <div className="thread">
