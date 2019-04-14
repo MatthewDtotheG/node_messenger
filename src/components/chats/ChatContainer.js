@@ -1,14 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Sidebar from "./Sidebar";
 import ChatHeading from "./ChatHeading";
 import Messages from "../messages/Messages";
 import MessageInput from "../messages/MessageInput";
+import { MESSAGE_RECIEVED, TYPING } from "../../Events";
 import {
-  COMMUNITY_CHAT,
-  MESSAGE_SENT,
-  MESSAGE_RECIEVED,
-  TYPING
-} from "../../Events";
+  communityChat,
+  typingAction,
+  messageAction
+} from "../../actions/userAction";
 
 class ChatContainer extends Component {
   constructor(props) {
@@ -20,8 +21,8 @@ class ChatContainer extends Component {
   }
 
   componentDidMount() {
-    const { socket } = this.props;
-    socket.emit(COMMUNITY_CHAT, this.resetChat);
+    // socket.emit(COMMUNITY_CHAT, this.resetChat);
+    this.props.communityChat(this.resetChat);
   }
 
   // Reset the chat back to only the chat passed in
@@ -39,18 +40,22 @@ class ChatContainer extends Component {
   // @param reset {boolean} if true will set the chat as the only chat
 
   addChat = (chat, reset) => {
-    console.log(chat);
-    const { socket } = this.props;
     const { chats } = this.state;
 
     const newChats = reset ? [chat] : [...chats, chat];
-    this.setState({ chats:newChats, activeChat:reset ? chat:this.state.activeChat});
+    this.setState({
+      chats: newChats,
+      activeChat: reset ? chat : this.state.activeChat
+    });
 
     const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`;
     const typingEvent = `${TYPING}-${chat.id}`;
 
-    socket.on(typingEvent, this.updateTypingInChat(chat.id));
-    socket.on(messageEvent, this.addMessageToChat(chat.id));
+    //actions here
+    this.props.typingAction(typingEvent, this.updateTypingInChat(chat.id));
+    this.props.messageAction(messageEvent, this.addMessageToChat(chat.id));
+    // socket.on(typingEvent, this.updateTypingInChat(chat.id));
+    // socket.on(messageEvent, this.addMessageToChat(chat.id));
   };
 
   // Returns a function that will
@@ -73,81 +78,49 @@ class ChatContainer extends Component {
   // @param chatId {number}
 
   updateTypingInChat = chatId => {
-    return ({isTyping, user}) => {
-      if(user !== this.props.user.name){
-        const { chats } = this.state
-        let newChats = chats.map((chat) =>{
-          if(chat.id === chatId){
-            if(isTyping && !chat.typingUsers.includes(user)){
-              chat.typingUsers.push(user)
-            } else if(!isTyping && chat.typingUsers.includes(user)) {
-              chat.typingUsers = chat.typingUsers.filter(u => u !== user)
+    return ({ isTyping, user }) => {
+      if (user !== this.props.user.name) {
+        const { chats } = this.state;
+        let newChats = chats.map(chat => {
+          if (chat.id === chatId) {
+            if (isTyping && !chat.typingUsers.includes(user)) {
+              chat.typingUsers.push(user);
+            } else if (!isTyping && chat.typingUsers.includes(user)) {
+              chat.typingUsers = chat.typingUsers.filter(u => u !== user);
             }
           }
-          return chat
-        })
-        this.setState({chats: newChats})
+          return chat;
+        });
+        this.setState({ chats: newChats });
       }
-    }
+    };
   };
 
   setActiveChat = activeChat => {
-    console.log(activeChat);
-    console.log("IN ACTIVE CHAT");
     this.setState({ activeChat });
   };
 
-  // Adds a message to the specified chat
-  // @param chatId {number} The id of the chat to be added to
-  // @param message {string} The message to be added to the chat
-
-  sendMessage = (chatId, message) => {
-    const { socket } = this.props;
-    socket.emit(MESSAGE_SENT, { chatId, message });
-  };
-
-  // Sends typing status to server
-  // chatId {number} the id of the chat being typed in
-  // typing {boolean} If the user is typing still or not
-
-  sendTyping = (chatId, isTyping) => {
-    const { socket } = this.props;
-    socket.emit(TYPING, { chatId, isTyping });
-  };
-
   render() {
-    const { user, logout } = this.props;
-    const { chats, activeChat } = this.state;
-    console.log(chats);
-    console.log(activeChat);
-    console.log(user);
-    console.log("IN CHART CONTAINER");
+    const { userName, chatObj } = this.props;
+    const { chats } = this.state;
     return (
       <div className="container">
         <Sidebar
-          logout={logout}
           chats={chats}
-          user={user}
-          activeChat={activeChat}
+          user={userName}
+          activeChat={chatObj}
           setActiveChat={this.setActiveChat}
         />
         <div className="chat-room-container">
-          {activeChat !== null ? (
+          {chatObj !== undefined ? (
             <div className="chat-room">
-              <ChatHeading name={activeChat.name} />
+              <ChatHeading name={chatObj.name} />
               <Messages
-                messages={activeChat.messages}
-                user={user}
-                typingUsers={activeChat.typingUsers}
+                messages={chatObj.messages}
+                user={userName}
+                typingUsers={chatObj.typingUsers}
               />
-              <MessageInput
-                sendMessage={message => {
-                  this.sendMessage(activeChat.id, message);
-                }}
-                sendTyping={isTyping => {
-                  this.sendTyping(activeChat.id, isTyping);
-                }}
-              />
+              <MessageInput chatId={chatObj.id} />
             </div>
           ) : (
             <div className="chat-room choose">
@@ -160,4 +133,20 @@ class ChatContainer extends Component {
   }
 }
 
-export default ChatContainer;
+const mapStateToProps = state => ({
+  chatObj: state.userStuff.chatObj,
+  userName: state.userStuff.userName
+});
+
+const mapDispatchToProps = dispatch => ({
+  communityChat: resetChat => dispatch(communityChat(resetChat)),
+  typingAction: (typingEvent, callback) =>
+    dispatch(typingAction(typingEvent, callback)),
+  messageAction: (messageEvent, callback) =>
+    dispatch(messageAction(messageEvent, callback))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatContainer);

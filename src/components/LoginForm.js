@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { VERIFY_USER } from "../Events";
-
+// import { VERIFY_USER } from "../Events";
+import { userConnected, verifyUser } from "../actions/userAction";
+import { connect } from "react-redux";
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -16,15 +17,17 @@ class LoginForm extends Component {
       this.setError("Username taken");
     } else {
       this.setError("");
-      this.props.setUser(user);
+      // this.props.setUser(user);
+      this.props.userConnected(user);
     }
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { socket } = this.props;
+    // const { socket } = this.props;
     const { nickname } = this.state;
-    socket.emit(VERIFY_USER, nickname, this.verifyUser);
+    this.props.verifyUser(nickname, this.verifyUser);
+    //socket.emit(VERIFY_USER, nickname, this.verifyUser);
   };
 
   handleChange = e => {
@@ -45,7 +48,7 @@ class LoginForm extends Component {
       <div className="login">
         <form onSubmit={this.handleSubmit} className="login-form">
           <label htmlFor="nickname">
-            <h2>Got a nickname</h2>
+            <h2>Enter username</h2>
           </label>
           <input
             ref={input => {
@@ -64,4 +67,12 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => ({
+  userConnected: user => dispatch(userConnected(user)),
+  verifyUser: (nickname, callback) => dispatch(verifyUser(nickname, callback))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LoginForm);
