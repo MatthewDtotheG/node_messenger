@@ -11,7 +11,7 @@ import {
 } from "../../src/Events";
 import io from "socket.io-client";
 
-const socketUrl = "http://192.168.1.26:5000/";
+const socketUrl = "http://node-messenger-server-dev.us-east-1.elasticbeanstalk.com/";
 const socket = io(socketUrl);
 
 export const sendMessage = userStuff => dispatch => {
