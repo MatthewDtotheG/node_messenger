@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Sidebar from "./Sidebar";
+// import Sidebar from "./Sidebar";
 import ChatHeading from "./ChatHeading";
 import Messages from "../messages/Messages";
 import MessageInput from "../messages/MessageInput";
@@ -102,18 +102,18 @@ class ChatContainer extends Component {
   render() {
     const { userName, chatObj } = this.props;
     const { chats } = this.state;
+
     return (
       <div className="container">
-        <Sidebar
-          chats={chats}
-          user={userName}
-          activeChat={chatObj}
-          setActiveChat={this.setActiveChat}
-        />
         <div className="chat-room-container">
           {chatObj !== undefined ? (
             <div className="chat-room">
-              <ChatHeading name={chatObj.name} />
+              <ChatHeading
+                chats={chats}
+                user={userName}
+                activeChat={chatObj}
+                setActiveChat={this.setActiveChat}
+              />
               <Messages
                 messages={chatObj.messages}
                 user={userName}
@@ -121,11 +121,7 @@ class ChatContainer extends Component {
               />
               <MessageInput chatId={chatObj.id} />
             </div>
-          ) : (
-            <div className="chat-room choose">
-              <h3>Choose a chat!</h3>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     );

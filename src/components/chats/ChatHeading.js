@@ -1,19 +1,26 @@
-import React from "react";
-// import { FaVideoCamera, FaUserPlus } from "react-icons/fa";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/userAction";
 
-export default function({name, numberOfUsers}) {
+class ChatHeading extends Component {
+  render() {
+    const { user } = this.props;
     return (
       <div className="chat-header">
         <div className="user-info">
-          <div className="user-name">{name}</div>
-          <div className="status">
-            <div className="indicator"></div>
-            <span>{numberOfUsers ? numberOfUsers : null}</span>
-          </div>
+          <div className="user-name">{`Hi, ${user}`}</div>
         </div>
-        <div className="options">
-
-        </div>
+        <p onClick={() => this.props.logoutUser()}>Logout</p>
       </div>
-    )
+    );
+  }
 }
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser: () => dispatch(logoutUser())
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ChatHeading);

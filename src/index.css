@@ -37,6 +37,20 @@ textarea {
   border-bottom: solid 2px gray;
   outline: none;
 }
+.login-form button {
+  margin-top: 40px;
+  font-size: 20px;
+  border-radius: 5px;
+  background-color: #30c5ff;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.login-form button:hover {
+  background-color: white;
+  color: #30c5ff;
+}
 .login-form .error {
   text-align: center;
   margin: 5px 0;
@@ -213,6 +227,9 @@ textarea {
   align-items: center;
   display: flex;
 }
+.chat-header p {
+  cursor: pointer;
+}
 .chat-header .options {
   display: flex;
   align-items: center;
@@ -220,13 +237,14 @@ textarea {
   justify-content: space-around;
   height: 100%;
   width: 15%;
+  cursor: pointer;
 }
 .chat-header .options svg {
   cursor: pointer;
 }
 .chat-room-container {
   height: 100%;
-  width: 76.25%;
+  width: 100%;
 }
 @media screen and (max-width: 510px) {
   #side-bar {
@@ -272,7 +290,7 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  color: gray;
+  color: black;
   background: white;
 }
 .message-container {
@@ -296,11 +314,11 @@ textarea {
   text-align: right;
 }
 .message-container .message {
-  background: #fff;
+  background: #30c5ff;
   border-radius: 5px;
   border-top-left-radius: 0;
   box-sizing: border-box;
-  color: gray;
+  color: white;
   height: 100%;
   padding: 10px 15px;
   position: relative;
@@ -347,7 +365,7 @@ textarea {
 }
 .message-container.right .message {
   background: gray;
-  color: #fff;
+  color: white;
   border-top-right-radius: 0;
   border-top-left-radius: 5px;
 }
@@ -408,11 +426,12 @@ textarea {
   border: none;
   height: 100%;
   color: #fff;
-  background: gray;
+  background: #30c5ff;
   transition: all 0.35s ease-out;
+  cursor: pointer;
 }
 .message-input .message-form .send:disabled {
   opacity: 0.2;
-  background: gray;
+  background: #30c5ff;
 }
 /*# sourceMappingURL=index.css.map */

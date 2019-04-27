@@ -11,7 +11,7 @@ import {
 } from "../../src/Events";
 import io from "socket.io-client";
 
-const socketUrl = "https://projectbackendmdgfhm.net";
+const socketUrl = "https://projectbackendmdgfhm.net"; // "https://projectbackendmdgfhm.net";
 const socket = io(socketUrl);
 
 export const sendMessage = userStuff => dispatch => {
